@@ -20,8 +20,8 @@ export default({
 <style>
 .img-wrap {
   margin: 0 auto;
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   position: relative;
 }
 

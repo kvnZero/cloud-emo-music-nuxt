@@ -23,24 +23,24 @@ export default({
 
 <style>
 .message-wrap {
-  margin: 0;padding: 0;
+  margin: 0;
+  padding: 0;
   height: 100%;
   width: 100%;
+  display: flex;
+  margin-bottom: 10px;
 }
 .message-info {
   width: 70%;
-  display: inline-block;
   padding: 10px;
   background-color: rgba(108, 108, 108, 0.2);
   border-radius: 10px;
-
-  line-height: 14px;
+  margin-left: 5px;
 }
 .message-avater {
   width: 40px;
   height: 40px;
   background-color: #000;
   border-radius: 50%;
-  display: inline-block;
 }
 </style>
