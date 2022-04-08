@@ -2,17 +2,47 @@
   <div class="container">
     <SongTitle class="song-title" songName="歌名" singerName="歌手名" />
     <Cover class="cover" />
-    <Message messageInfo="这是一条消息,假设这条消息很长很长很长很长很长长很长很长很长很长长很长很长很长很长长很长很长很长很长"/>
-    <Message messageInfo="这是一条消息"/>
-    <Message messageInfo="这是一条消息"/>
-    <Message messageInfo="这是一条消息"/>
-
   </div>
 </template>
 
 <script>
+import socket from '~/plugins/socket.io.js'
+
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  asyncData () {
+    return new Promise(resolve =>
+      socket.emit('last-messages', messages => resolve({ messages }))
+    )
+  },
+   watch: {
+    messages: 'scrollToBottom'
+  },
+  beforeMount () {
+    socket.on('new-message', (message) => {
+      this.messages.push(message)
+    })
+  },
+  mounted () {
+    this.scrollToBottom()
+  },
+  methods: {
+    sendMessage () {
+      if (!this.message.trim()) { return }
+      const message = {
+        date: new Date().toJSON(),
+        text: this.message.trim()
+      }
+      this.messages.push(message)
+      this.message = ''
+      socket.emit('send-message', message)
+    },
+    scrollToBottom () {
+      this.$nextTick(() => {
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+      })
+    }
+  }
 }
 </script>
 

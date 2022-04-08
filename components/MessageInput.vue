@@ -11,7 +11,7 @@
 <script>
 
 export default({
-  name: "Message",
+  name: "MessageInput",
   props: {
     messageInfo: {
       type: String
@@ -23,20 +23,21 @@ export default({
 <style>
 .input-wrap {
   padding: 0 10px;
-  height: 100%;
+  height: 40px;
   width: 100%;
 }
 .message-input {
-  width: 80%;
-  height: 40px;
+  width: 75%;
+  height: 100%;
   display: inline-block;
   background-color: rgba(108, 108, 108, 0.2);
 }
 .message-send-btn {
-  width: 10%;
-  height: 40px;
+  width: 15%;
+  height: 60%;
   background-color: rgb(47, 196, 255);
   border-radius: 10px;
   display: inline-block;
+  padding: 10px auto;
 }
 </style>
