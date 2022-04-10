@@ -60,6 +60,7 @@ export default {
   margin-bottom: 10px;
 }
 #tips {
+  margin-top: 5px;
   font-size: 12px;
   text-align: center;
   color: gray;
