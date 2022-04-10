@@ -3,16 +3,23 @@
     <div class="img-preview">
     </div>
     <div class="img-mask">
+      <img v-show="img != ''" :src="img" class="img-bg">
     </div>
   </div>
 
 </template>
 
 <script>
-
 export default({
   name: "Cover",
   props: {
+    img: {
+      type: String,
+      default: '',
+    }
+  },
+  created() {
+
   }
 })
 </script>
@@ -43,6 +50,19 @@ export default({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+
+.img-bg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: rotation 30s infinite ease;
+}
+
+@-webkit-keyframes rotation {
+  from {transform: rotate(0deg);border-radius: 50%;}
+  to {transform: rotate(360deg);}
 }
 
 </style>

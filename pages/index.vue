@@ -1,47 +1,50 @@
 <template>
   <div class="container">
-    <SongTitle class="song-title" songName="歌名" singerName="歌手名" />
-    <Cover class="cover" />
+    <SongTitle class="song-title" :songName="playInfo.data.music.name" :singerName="playInfo.data.music.signer.name" />
+    <Cover class="cover" :img="playInfo.data.music.cover.url" />
+    <audio id="audio" ref="audio" :src="playInfo.data.music.url" autoplay="autoplay" controls=""></audio>
   </div>
 </template>
 
 <script>
-import socket from '~/plugins/socket.io.js'
+import axios from "axios";
 
 export default {
   name: 'IndexPage',
-  asyncData () {
-    return new Promise(resolve =>
-      socket.emit('last-messages', messages => resolve({ messages }))
-    )
+  data() {
+    return {
+      playList: [],
+      playInfo: {
+        data: {
+          music: {
+            name: "-",
+            url: "",
+            signer: {
+              name: "-"
+            },
+            cover: {
+              url: ""
+            }
+          }
+        }
+      }
+    }
   },
-   watch: {
-    messages: 'scrollToBottom'
-  },
-  beforeMount () {
-    socket.on('new-message', (message) => {
-      this.messages.push(message)
+  created() {
+    this.getPlayList().then(res => {
+      this.playList = res.data;
+    })
+    this.getPlayInfo().then(res => {
+      this.playInfo = res.data;
     })
   },
-  mounted () {
-    this.scrollToBottom()
-  },
   methods: {
-    sendMessage () {
-      if (!this.message.trim()) { return }
-      const message = {
-        date: new Date().toJSON(),
-        text: this.message.trim()
-      }
-      this.messages.push(message)
-      this.message = ''
-      socket.emit('send-message', message)
+    getPlayList () {
+      return axios.get("http://emo_server.abigeater.com/get/play/list")
     },
-    scrollToBottom () {
-      this.$nextTick(() => {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-      })
-    }
+    getPlayInfo () {
+      return axios.get("http://emo_server.abigeater.com/get/play")
+    },
   }
 }
 </script>
@@ -52,5 +55,11 @@ export default {
 }
 .song-title {
   margin-bottom: 10px;
+}
+#audio {
+    margin: 0px auto;
+    width: 95%;
+    position: absolute;
+    bottom: 10px;
 }
 </style>

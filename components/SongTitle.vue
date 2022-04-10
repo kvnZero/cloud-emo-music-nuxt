@@ -15,10 +15,12 @@ export default({
   name: "SongTitle",
   props: {
     songName: {
-      type: String
+      type: String,
+      default: "未知",
     },
     singerName: {
-      type: String
+      type: String,
+      default: "未知",
     },
   }
 })
