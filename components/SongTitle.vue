@@ -32,6 +32,7 @@ export default({
 }
 .song-name {
   font-size: 18px;
+  color: rgb(188, 188, 188)
 }
 .singer-name {
   font-size: 12px;
