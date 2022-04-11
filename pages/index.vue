@@ -47,11 +47,17 @@ export default {
     }
   },
   mounted(){
-    var that = this
-    this.$refs.audio.addEventListener("ended", function(){
+    // var that = this
+    // this.$refs.audio.addEventListener("ended", function(){
+    //   console.log("播放完毕,获取下一首数据")
+    //   that.getPlayInfo().then(res => { // 请求下一首
+    //     that.handlePlay(res.data);
+    //   })
+    // })
+    this.$refs.audio.addEventListener("ended", () =>
       console.log("播放完毕,获取下一首数据")
-      that.getPlayInfo().then(res => { // 请求下一首
-        that.handlePlay(res.data);
+      this.getPlayInfo().then(res => { // 请求下一首
+        this.handlePlay(res.data);
       })
     })
   },
