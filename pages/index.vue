@@ -51,7 +51,7 @@ export default {
     this.$refs.audio.addEventListener("ended", function(){
       console.log("播放完毕,获取下一首数据")
       that.getPlayInfo().then(res => { // 请求下一首
-        this.handlePlay(res.data);
+        that.handlePlay(res.data);
       })
     })
   },
