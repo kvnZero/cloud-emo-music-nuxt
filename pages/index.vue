@@ -59,6 +59,7 @@ export default {
         this.getPlayInfo().then(res => this.handlePlay(res.data)) // 请求下一首
       }
     )
+    this.$refs.audio.volume = 0.3;
   },
   created() {
     this.getPlayInfo().then(res => {
