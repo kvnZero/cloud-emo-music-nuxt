@@ -45,4 +45,8 @@ export default {
   build: {
     // transpile: [/^element-ui/],
   },
+
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://emo_server.abigeater.com',
+  }
 }

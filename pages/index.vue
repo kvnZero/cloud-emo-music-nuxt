@@ -33,20 +33,26 @@ export default {
       }
     }
   },
-  created() {
-    this.getPlayList().then(res => {
-      this.playList = res.data;
+  mounted(){
+    this.$refs.audio.addEventListener("ended", function(){
+      console.log("播放完毕,获取下一首数据")
+      this.getPlayInfo().then(res => { // 请求下一首
+        this.playInfo = res.data;
+      })
     })
+    this.$refs.audio.play()
+  },
+  created() {
     this.getPlayInfo().then(res => {
       this.playInfo = res.data;
     })
   },
   methods: {
-    getPlayList () {
-      return axios.get("http://emo_server.abigeater.com/get/play/list")
-    },
+    // getPlayList () {
+    //   return axios.get("http://emo_server.abigeater.com/get/play/list")
+    // },
     getPlayInfo () {
-      return axios.get("http://emo_server.abigeater.com/get/play")
+      return axios.get( process.env.baseUrl + "/get/play")
     },
   }
 }
