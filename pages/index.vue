@@ -70,7 +70,7 @@ export default {
     handlePlay(res) {
       if (res.data.music.name != this.playInfo.data.music.name) {
         this.playInfo = res;
-        this.$refs.audio.currentTime = this.playInfo.data.music.time
+        this.$refs.audio.currentTime = this.playInfo.data.time
         if (this.$refs.audio.paused) {
           this.$refs.audio.play()
         }
