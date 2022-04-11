@@ -71,9 +71,7 @@ export default {
       if (res.data.music.name != this.playInfo.data.music.name) {
         this.playInfo = res;
         this.$refs.audio.currentTime = this.playInfo.data.time
-        if (this.$refs.audio.paused) {
-          this.$refs.audio.play()
-        }
+        this.$refs.audio.play()
       }
     }
   }
