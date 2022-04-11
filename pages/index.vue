@@ -38,9 +38,9 @@ export default {
       console.log("播放完毕,获取下一首数据")
       this.getPlayInfo().then(res => { // 请求下一首
         this.playInfo = res.data;
+        this.$refs.audio.play()
       })
     })
-    this.$refs.audio.play()
   },
   created() {
     this.getPlayInfo().then(res => {
