@@ -54,12 +54,11 @@ export default {
     //     that.handlePlay(res.data);
     //   })
     // })
-    this.$refs.audio.addEventListener("ended", () =>
-      console.log("播放完毕,获取下一首数据")
-      this.getPlayInfo().then(res => { // 请求下一首
-        this.handlePlay(res.data);
-      })
-    })
+    this.$refs.audio.addEventListener("ended", () => {
+        console.log("播放完毕,获取下一首数据")
+        this.getPlayInfo().then(res => this.handlePlay(res.data)) // 请求下一首
+      }
+    )
   },
   created() {
     this.getPlayInfo().then(res => {
