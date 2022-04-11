@@ -3,7 +3,7 @@
     <div class="img-preview">
     </div>
     <div class="img-mask">
-      <img v-show="img != ''" :src="img" class="img-bg">
+      <img v-show="img" :src="img" class="img-bg">
     </div>
   </div>
 
