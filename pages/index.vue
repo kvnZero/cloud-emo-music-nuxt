@@ -2,7 +2,7 @@
   <div class="container">
     <SongTitle class="song-title" :songName="playInfo.data.music.name" :singerName="playInfo.data.music.signer.name" />
     <Cover class="cover" :img="playInfo.data.music.cover.url" />
-    <audio id="audio" ref="audio" :src="playInfo.data.music.url" autoplay="autoplay" controls="" controlsList="nodownload"></audio>
+    <audio id="audio" ref="audio" :src="playInfo.data.music.url" autoplay="autoplay" controls="" controlsList="nodownload" muted="muted"></audio>
     <div id="tips">
       部分浏览器不会自动播放, 请在底部控制播放
     </div>
@@ -11,6 +11,19 @@
 
 <script>
 import axios from "axios";
+
+Audio.prototype.play = (function(play) {
+return function () {
+  var audio = this,
+      args = arguments,
+      promise = play.apply(audio, args);
+  if (promise !== undefined) {
+    promise.catch(_ => {
+      console.log('浏览器不支持自动播放')
+    });
+  }
+};
+})(Audio.prototype.play);
 
 export default {
   name: 'IndexPage',
@@ -34,17 +47,17 @@ export default {
     }
   },
   mounted(){
+    var that = this
     this.$refs.audio.addEventListener("ended", function(){
       console.log("播放完毕,获取下一首数据")
-      this.getPlayInfo().then(res => { // 请求下一首
-        this.playInfo = res.data;
-        this.$refs.audio.play()
+      that.getPlayInfo().then(res => { // 请求下一首
+        this.handlePlay(res.data);
       })
     })
   },
   created() {
     this.getPlayInfo().then(res => {
-      this.playInfo = res.data;
+      this.handlePlay(res.data);
     })
   },
   methods: {
@@ -54,6 +67,15 @@ export default {
     getPlayInfo () {
       return axios.get( process.env.baseUrl + "/get/play")
     },
+    handlePlay(res) {
+      if (res.data.music.name != this.playInfo.data.music.name) {
+        this.playInfo = res;
+        this.$refs.audio.currentTime = this.playInfo.data.music.time
+        if (this.$refs.audio.paused) {
+          this.$refs.audio.play()
+        }
+      }
+    }
   }
 }
 </script>
