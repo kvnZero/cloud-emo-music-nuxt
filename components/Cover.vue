@@ -36,9 +36,9 @@ export default({
   width: 100%;
   height: 100%;
   background-color: #000;
-  background-image: linear-gradient(25deg, #1b155e, #4d3375, #78548d, #a477a5);
+  box-shadow: 2px 2px 10px #525252;
+  background-image: repeating-linear-gradient(45deg, rgba(137,137,137, 0.06) 0px, rgba(137,137,137, 0.06) 2px,transparent 2px, transparent 4px),linear-gradient(90deg, rgb(5,5,5),rgb(5,5,5));
   border-radius: 50%;
-  overflow: hidden;
 }
 
 .img-mask {
