@@ -1,4 +1,6 @@
 import io from 'socket.io-client'
-// const socket = io('ws://127.0.0.1:9502/',  { transports: ["websocket"] })
-
+const socket = io( process.env.socketUrl + '/',  { transports: ["websocket"] })
+socket.on('connect', data => {
+    socket.emit('join-room', 'main');
+});
 export default socket

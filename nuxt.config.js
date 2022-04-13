@@ -48,5 +48,6 @@ export default {
 
   env: {
     baseUrl: process.env.BASE_URL || 'http://emo_server.abigeater.com',
+    socketUrl: process.env.SOCKET_URL || 'ws://emo_server.abigeater.com',
   }
 }

@@ -3,6 +3,9 @@
     <SongTitle class="song-title" :songName="playInfo.data.music.name" :singerName="playInfo.data.music.signer.name" />
     <Cover class="cover" :img="playInfo.data.music.cover.url" />
     <audio id="audio" ref="audio" :src="playInfo.data.music.url" autoplay="autoplay" controls="" controlsList="nodownload" muted="muted"></audio>
+    <div id="online">
+      当前在线人数:{{online}}
+    </div>
     <div id="tips">
       部分浏览器不会自动播放, 请在底部控制播放
     </div>
@@ -11,6 +14,7 @@
 
 <script>
 import axios from "axios";
+import socket from '~/plugins/socket.io.js'
 
 Audio.prototype.play = (function(play) {
 return function () {
@@ -43,7 +47,8 @@ export default {
             }
           }
         }
-      }
+      },
+      online: 0
     }
   },
   mounted(){
@@ -60,6 +65,15 @@ export default {
       }
     )
     this.$refs.audio.volume = 0.3;
+    socket.on('client-change', data => {
+      this.online = data
+    });
+    socket.on('someone-leave-room', () => {
+      console.log("有人离开了房间")
+      socket.emit('query-room-count', 'main', data => {
+        this.online = data
+      });
+    });
   },
   created() {
     this.getPlayInfo().then(res => {
@@ -92,6 +106,12 @@ export default {
   margin-bottom: 10px;
 }
 #tips {
+  margin-top: 5px;
+  font-size: 12px;
+  text-align: center;
+  color: gray;
+}
+#online {
   margin-top: 5px;
   font-size: 12px;
   text-align: center;
