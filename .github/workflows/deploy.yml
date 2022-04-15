@@ -25,4 +25,4 @@ jobs:
             git checkout .
             git pull
             npm run build
-            pm2 restart emo
+            pm2 restart NuxtEmo
