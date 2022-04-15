@@ -24,5 +24,6 @@ jobs:
             cd $SERVER_WORKDIR
             git checkout .
             git pull
+            npm update
             npm run build
             pm2 restart NuxtEmo
