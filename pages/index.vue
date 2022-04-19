@@ -90,8 +90,8 @@ export default {
   },
   methods: {
     handlePlay(res) {
-      if (res.data.music.name != this.playInfo.data.music.name) {
-        this.playInfo = res;
+      if (res.music.name != this.playInfo.data.music.name) {
+        this.playInfo.data = res;
         this.$refs.audio.currentTime = this.playInfo.data.time
         this.$refs.audio.play()
       }
