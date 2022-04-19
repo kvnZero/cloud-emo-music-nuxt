@@ -17,6 +17,7 @@
 <script>
 import axios from "axios";
 import socket from '~/plugins/socket.io.js'
+import { getPlayInfo } from '~/apis/play.js'
 
 Audio.prototype.play = (function(play) {
 return function () {
@@ -57,16 +58,9 @@ export default {
     }
   },
   mounted(){
-    // var that = this
-    // this.$refs.audio.addEventListener("ended", function(){
-    //   console.log("播放完毕,获取下一首数据")
-    //   that.getPlayInfo().then(res => { // 请求下一首
-    //     that.handlePlay(res.data);
-    //   })
-    // })
     this.$refs.audio.addEventListener("ended", () => {
         console.log("播放完毕,获取下一首数据")
-        this.getPlayInfo().then(res => this.handlePlay(res.data)) // 请求下一首
+        getPlayInfo().then(res => this.handlePlay(res.data)) // 请求下一首
       }
     )
     this.$refs.audio.addEventListener("play", () => {
@@ -90,17 +84,11 @@ export default {
     });
   },
   created() {
-    this.getPlayInfo().then(res => {
+    getPlayInfo().then(res => {
       this.handlePlay(res.data);
     })
   },
   methods: {
-    // getPlayList () {
-    //   return axios.get("http://emo_server.abigeater.com/get/play/list")
-    // },
-    getPlayInfo () {
-      return axios.get( process.env.baseUrl + "/get/play")
-    },
     handlePlay(res) {
       if (res.data.music.name != this.playInfo.data.music.name) {
         this.playInfo = res;
