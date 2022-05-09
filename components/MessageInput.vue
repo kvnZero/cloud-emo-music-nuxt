@@ -1,43 +1,71 @@
 <template>
-  <div class="input-wrap">
-    <input class="message-input" />
-    <div class="message-send-btn">
-        发送
-    </div>
+  <div v-show="isPlay" id="message">
+    <input v-model="message" />
+    <button @click="sendMessage">发 送</button>
   </div>
-
 </template>
 
 <script>
+import socket from '~/plugins/socket.io.js'
 
 export default({
   name: "MessageInput",
   props: {
-    messageInfo: {
-      type: String
+    isPlay: {
+      type: Boolean,
+      default: false,
     },
+    online: {
+      default: 0,
+    },
+  },
+  data() {
+    return {
+      message: ""
+    }
+  },
+  methods: {
+    sendMessage() {
+      if (this.message && this.online) {
+        socket.emit('message-send', this.message);
+        this.message = ""
+      }
+    }
   }
 })
 </script>
 
 <style>
-.input-wrap {
-  padding: 0 10px;
-  height: 40px;
+#message button {
+  width: 17%;
+  height: 35px;
+  font-size:16px;
+  caret-color: green;
+  border: 0;
+  border-radius: 8px;
+  color: white;
+  background-color: #52cced;
+  font-weight: 400;
+  padding: 2px 10px;
+  border-color: transparent;
+}
+
+#message input {
+  width: 72%;
+  height: 30px;
+  font-size:16px;
+  caret-color: green;
+  border: 0;
+  outline-color: green;
+  outline-width: 1px;
+  border-radius: 8px;
+  padding: 2px 10px;
+  border-color: transparent;
+}
+
+#message {
+  position: absolute;
+  bottom: 5px;
   width: 100%;
-}
-.message-input {
-  width: 75%;
-  height: 100%;
-  display: inline-block;
-  background-color: rgba(108, 108, 108, 0.2);
-}
-.message-send-btn {
-  width: 15%;
-  height: 60%;
-  background-color: rgb(47, 196, 255);
-  border-radius: 10px;
-  display: inline-block;
-  padding: 10px auto;
 }
 </style>

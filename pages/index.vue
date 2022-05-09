@@ -7,15 +7,11 @@
     <vue-danmaku id="danmaku" ref="danmaku" :danmus="danmus" :speeds="100" :channels="5" :fontSize="20" :randomChannel="true" extraStyle="color:#30e1d7e3;font-weight: bold;"></vue-danmaku>
 
     <audio v-show="!isPlay" id="audio" ref="audio" :src="playInfo.data.music.url" autoplay="autoplay" controls="" controlsList="nodownload" muted="muted"></audio>
-    <div v-show="isPlay" id="message">
-      <input v-model="message" />
-      <button @click="sendMessage">发 送</button>
-    </div>
+    <MessageInput :isPlay="isPlay" :online="online"></MessageInput>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import socket from '~/plugins/socket.io.js'
 import { getPlayInfo } from '~/apis/play.js'
 
@@ -54,7 +50,6 @@ export default {
       online: 0,
       danmus: [],
       isPlay: false,
-      message: ""
     }
   },
   mounted(){
@@ -90,16 +85,10 @@ export default {
   },
   methods: {
     handlePlay(res) {
-      if (res.music.name != this.playInfo.data.music.name) {
+      if (res.music.name !== this.playInfo.data.music.name) {
         this.playInfo.data = res;
         this.$refs.audio.currentTime = this.playInfo.data.time
         this.$refs.audio.play()
-      }
-    },
-    sendMessage() {
-      if (this.message && this.online) {
-        socket.emit('message-send', this.message);
-        this.message = ""
       }
     }
   }
@@ -129,39 +118,9 @@ export default {
   width: 100%;
   position: absolute;
   bottom: 10px;
-  left: 0px
+  left: 0
 }
-#message button {
-  width: 16%;
-  height: 35px;
-  font-size:16px;
-  caret-color: green;
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  border: 0;
-  border-radius: 8px;
-  color: white;
-  background-color: #52cced; 
-  font-weight: 400;
-  padding: 2px 10px;
-  border-color: transparent; 
-}
-#message input {
-  width: 75%;
-  height: 30px;
-  font-size:16px;
-  caret-color: green;
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  border: 0px;
-  outline-color: green;
-  outline-width: 1px;
-  border-radius: 8px; 
-  padding: 2px 10px;
-  border-color: transparent; 
-}
+
 #danmaku{
   margin-top: 5px;
   height: 200px;
