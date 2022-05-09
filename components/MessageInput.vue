@@ -59,13 +59,13 @@ export default({
   outline-color: green;
   outline-width: 1px;
   border-radius: 8px;
-  padding: 2px 10px;
   border-color: transparent;
 }
 
 #message {
   position: absolute;
   bottom: 5px;
-  width: 100%;
+  width: 96%;
+  text-align: center;
 }
 </style>
