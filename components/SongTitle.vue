@@ -12,7 +12,7 @@
 <script>
 
 export default({
-  name: "SongTitle",
+  name: "song-title",
   props: {
     songName: {
       type: String,

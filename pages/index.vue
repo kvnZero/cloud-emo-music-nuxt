@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <SongTitle class="song-title" :songName="playInfo.data.music.name" :singerName="playInfo.data.music.signer.name" />
-    <Cover class="cover" :img="playInfo.data.music.cover.url" />
+    <song-title class="song-title" :songName="playInfo.data.music.name" :singerName="playInfo.data.music.signer.name" />
+    <cover class="cover" :img="playInfo.data.music.cover.url" />
     <div id="online">当前在线人数:{{online}}</div>
     <div id="tips">部分浏览器不会自动播放, 请在底部控制播放</div>
     <vue-danmaku id="danmaku" ref="danmaku" :danmus="danmus" :speeds="100" :channels="5" :fontSize="20" :randomChannel="true" extraStyle="color:#30e1d7e3;font-weight: bold;"></vue-danmaku>
 
     <audio v-show="!isPlay" id="audio" ref="audio" :src="playInfo.data.music.url" autoplay="autoplay" controls="" controlsList="nodownload" muted="muted"></audio>
-    <MessageInput :isPlay="isPlay" :online="online"></MessageInput>
+    <message-input :isPlay="isPlay" :online="online"></message-input>
   </div>
 </template>
 

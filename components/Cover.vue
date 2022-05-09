@@ -11,7 +11,7 @@
 
 <script>
 export default({
-  name: "Cover",
+  name: "cover",
   props: {
     img: {
       type: String,

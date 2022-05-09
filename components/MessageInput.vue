@@ -9,7 +9,7 @@
 import socket from '~/plugins/socket.io.js'
 
 export default({
-  name: "MessageInput",
+  name: "message-input",
   props: {
     isPlay: {
       type: Boolean,
