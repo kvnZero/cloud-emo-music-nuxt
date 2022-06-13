@@ -18,6 +18,8 @@
 <script>
 import socket from '~/plugins/socket.io.js'
 import { getPlayInfo } from '~/apis/play.js'
+import Vue from "vue";
+import Emoji from "../components/Emoji";
 
 Audio.prototype.play = (function(play) {
 return function () {
@@ -48,7 +50,8 @@ export default {
             cover: {
               url: ""
             }
-          }
+          },
+          animation: []
         }
       },
       online: 0,
@@ -75,7 +78,7 @@ export default {
       }
     )
     this.$refs.audio.volume = 0.3;
-    socket.on('client-change', data => {
+    socket.on('client-change', (data) => {
       this.online = data
     });
     socket.on('someone-leave-room', () => {
@@ -83,6 +86,13 @@ export default {
       socket.emit('query-room-count', 'main', data => {
         this.online = data
       });
+    });
+    socket.on('play-animation', (data) => {
+      console.log("服务器投放雨")
+      this.rainAnimation({
+        num: data.num,
+        text: data.text
+      })
     });
     socket.on('message-come', (data) => {
       this.$refs.danmaku.add(data)
@@ -92,6 +102,7 @@ export default {
     getPlayInfo().then(res => {
       this.handlePlay(res.data);
     })
+    this.loopSongAnimation();
   },
   methods: {
     handlePlay(res) {
@@ -101,8 +112,43 @@ export default {
         this.$refs.audio.play()
       }
     },
+    loopSongAnimation() {
+      setTimeout(() => {
+        for (let i = 0; i < this.playInfo.data.animation.length; i++){
+          let item = this.playInfo.data.animation[i]
+          if (item.position === parseInt(this.$refs.audio.currentTime)) {
+            this.rainAnimation({
+              num: item.num,
+              text: item.text
+            })
+          }
+        }
+        this.loopSongAnimation();
+      }, 1000)
+    },
     loopChange () {
       this.isLoop = !this.isLoop
+    },
+    rainAnimation(info) {
+      for (let i = 0; i < info.num; i++){
+        let x = Math.floor(Math.random() * ( window.innerWidth - 20) + 20)
+        let node = new Vue({
+          render: h => h(Emoji)
+        }).$mount()
+        document.body.appendChild(node.$el)
+        let instance = node.$children[0]
+        instance.show({
+          xAxis:  x,
+          text: info.text,
+          speed:  5000,
+          onDropped: () => {
+            document.body.removeChild(instance.$el)
+          }
+        })
+        setTimeout(() => {
+          instance.start()
+        }, i * (10 * 1000 / info.num))
+      }
     }
   }
 }
@@ -153,7 +199,6 @@ export default {
   border-radius: 20px;
   color: #2c2c2c;
 }
-
 body {
   background-image: repeating-linear-gradient(48deg, rgb(0,0,0) 0px, rgb(0,0,0) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(352deg, rgb(0,0,0) 0px, rgb(0,0,0) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(30deg, rgb(0,0,0) 0px, rgb(0,0,0) 27px,transparent 27px, transparent 30px),linear-gradient(90deg, rgb(14, 172, 245),rgb(129, 60, 165));
   background-color: black;
