@@ -49,9 +49,9 @@ export default {
             },
             cover: {
               url: ""
-            }
-          },
-          animation: []
+            },
+            animation: []
+          }
         }
       },
       online: 0,
@@ -90,12 +90,21 @@ export default {
     socket.on('play-animation', (data) => {
       console.log("服务器投放雨")
       this.rainAnimation({
-        num: data.num,
-        text: data.text
+        num: 100,
+        text: data
       })
     });
     socket.on('message-come', (data) => {
       this.$refs.danmaku.add(data)
+      for (let i = 0; i < this.playInfo.data.music.animation.length; i++){
+        let item = this.playInfo.data.music.animation[i]
+        if (data === item.key && item.type === 'message') {
+          this.rainAnimation({
+            num: item.num,
+            text: item.text
+          })
+        }
+      }
     });
   },
   created() {
@@ -114,9 +123,9 @@ export default {
     },
     loopSongAnimation() {
       setTimeout(() => {
-        for (let i = 0; i < this.playInfo.data.animation.length; i++){
-          let item = this.playInfo.data.animation[i]
-          if (item.position === parseInt(this.$refs.audio.currentTime)) {
+        for (let i = 0; i < this.playInfo.data.music.animation.length; i++){
+          let item = this.playInfo.data.music.animation[i]
+          if (item.position === parseInt(this.$refs.audio.currentTime) && item.type === 'position') {
             this.rainAnimation({
               num: item.num,
               text: item.text
